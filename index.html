@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#100d14">
+<title>For Aadhii — Thangamana Paiyan</title>
+<style>
+:root{--bg:#100d14;--panel:#19141e;--gold:#e7c98c;--cream:#f7f0e7;--muted:#c5b9c5;--pink:#d9a7b5}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(ellipse at 50% 0%,#382333 0%,#17111c 42%,var(--bg) 78%);color:var(--cream);font-family:Georgia,'Times New Roman',serif;line-height:1.65}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.25;background-image:radial-gradient(#f7e5bd 1px,transparent 1px);background-size:65px 65px;mask-image:linear-gradient(to bottom,black,transparent 80%)}
+main{width:min(100% - 32px,920px);margin:auto;position:relative}
+section{padding:76px 0;text-align:center}
+.kicker{letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font:11px Arial,sans-serif}
+h1,h2,h3,p{margin-top:0}
+h1{font-size:clamp(42px,9vw,78px);line-height:1.05;margin:20px 0;color:var(--gold);font-weight:normal}
+h2{font-size:clamp(29px,6vw,43px);font-weight:normal;color:var(--gold);line-height:1.2}
+.lead{font-size:18px;color:var(--muted);max-width:620px;margin:0 auto 26px}
+button,.button{border:1px solid var(--gold);background:transparent;color:var(--gold);padding:13px 22px;border-radius:30px;font:13px Arial,sans-serif;letter-spacing:.08em;cursor:pointer;transition:.25s}
+button:hover,.button:hover{background:var(--gold);color:#1a1219;transform:translateY(-2px)}
+.hero{min-height:88vh;display:flex;align-items:center;justify-content:center;flex-direction:column;padding-top:80px}
+.hero .small{font-style:italic;color:var(--muted);font-size:18px}
+.rule{width:70px;height:1px;background:var(--gold);margin:25px auto}
+.hidden{display:none!important}
+.card{background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.025));border:1px solid rgba(231,201,140,.25);border-radius:20px;padding:28px;box-shadow:0 18px 55px #0004}
+.gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:32px}
+.photo{margin:0;padding:8px;background:#f3e9dd;border-radius:12px;transform:rotate(var(--tilt,0deg));box-shadow:0 12px 30px #0005}
+.photo:nth-child(odd){--tilt:-1deg}.photo:nth-child(even){--tilt:1deg}
+.photo img {
+  width: 100%;
+  height: 330px;
+  display: block;
+  object-fit: contain;
+  border-radius: 6px;
+  background: #17121a;
+}
+.photo figcaption{color:#55424c;font:12px Arial,sans-serif;padding:8px 2px 2px}
+.memory-note{max-width:660px;margin:30px auto 0;color:var(--muted);font-size:18px}
+.nickname{font-size:clamp(32px,7vw,54px);color:var(--pink);font-style:italic;margin:20px 0}
+.envelope{display:inline-flex;align-items:center;gap:12px;margin-top:22px;padding:17px 24px;border:1px solid var(--gold);border-radius:14px;color:var(--cream);background:#211824;cursor:pointer}
+.envelope span{font-size:28px}
+.adventure{margin-top:28px}
+.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:25px 0}
+.choice{min-height:155px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;border:1px solid #725b70;border-radius:16px;background:#211925;color:var(--cream);padding:18px;cursor:pointer;transition:.3s}
+.choice .question{font-size:35px;color:var(--gold)}
+.choice .reveal{display:none;color:var(--gold);font-size:17px}
+.choice.open{background:#352333;border-color:var(--gold);transform:translateY(-3px)}
+.choice.open .question{display:none}.choice.open .reveal{display:block}
+.choice.selected{outline:2px solid var(--pink);box-shadow:0 0 25px #d9a7b533}
+#planResult{margin:22px auto 0;max-width:550px;color:var(--cream)}
+footer{padding:35px 0 60px;text-align:center;color:#9e8e9c;font-size:13px}
+.musicbox{margin:20px auto 0;display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap}
+input[type=file]{max-width:220px;color:var(--muted);font:12px Arial,sans-serif}
+.tiny{font:12px Arial,sans-serif;color:#a99aa8}
+@media(max-width:560px){section{padding:58px 0}.gallery{grid-template-columns:1fr}.photo img{height:auto;max-height:520px;object-fit:contain;background:#17121a}.choices{grid-template-columns:1fr 1fr}.choice{min-height:140px;padding:12px}.hero{min-height:80vh}}
+
+/* ✨ Magical animated star background */
+.starfield {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+
+  background-image:
+    radial-gradient(2px 2px at 20px 30px, #fff6d8 99%, transparent),
+    radial-gradient(2px 2px at 100px 150px, #e7c98c 99%, transparent),
+    radial-gradient(1px 1px at 200px 80px, #ffffff 99%, transparent),
+    radial-gradient(2px 2px at 300px 200px, #f7dca8 99%, transparent),
+    radial-gradient(1px 1px at 400px 50px, #ffffff 99%, transparent);
+
+  background-size: 450px 300px;
+  animation: starDrift 35s linear infinite;
+}
+
+/* Twinkling stars */
+.starfield::before,
+.starfield::after {
+  content: "✦";
+  position: absolute;
+  color: #e7c98c;
+  font-size: 18px;
+  animation: twinkle 3s ease-in-out infinite alternate;
+  text-shadow: 0 0 10px #e7c98c;
+}
+
+.starfield::before {
+  top: 15%;
+  left: 12%;
+  box-shadow:
+    180px 120px 0 #fff1c9,
+    350px 250px 0 #e7c98c,
+    600px 80px 0 #fff1c9,
+    800px 350px 0 #e7c98c,
+    1000px 150px 0 #fff1c9;
+}
+
+.starfield::after {
+  top: 55%;
+  left: 30%;
+  color: #ffffff;
+  animation-delay: 1.5s;
+  box-shadow:
+    100px 100px 0 #e7c98c,
+    300px -150px 0 #ffffff,
+    550px 180px 0 #f7dca8,
+    750px -100px 0 #ffffff;
+}
+
+@keyframes twinkle {
+  from {
+    opacity: 0.2;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.4);
+  }
+}
+
+@keyframes starDrift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 450px 300px;
+  }
+}
+
+/* Keep website content above the stars */
+body > *:not(.starfield) {
+  position: relative;
+  z-index: 1;
+}
+
+/* 🌙 Glowing moon */
+.moon-glow {
+  position: absolute;
+  top: 9%;
+  right: 10%;
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  background: #fff3d2;
+  box-shadow:
+    0 0 20px #e7c98c,
+    0 0 50px rgba(231, 201, 140, 0.5),
+    0 0 100px rgba(231, 201, 140, 0.2);
+  animation: moonPulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes moonPulse {
+  from {
+    opacity: 0.65;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+/* 🌠 Shooting stars */
+.shooting-star {
+  position: absolute;
+  width: 100px;
+  height: 2px;
+  background: linear-gradient(90deg, #fff, transparent);
+  opacity: 0;
+  transform: rotate(-35deg);
+  animation: shooting 5s linear infinite;
+}
+
+.star-one {
+  top: 15%;
+  left: 70%;
+  animation-delay: 1s;
+}
+
+.star-two {
+  top: 35%;
+  left: 40%;
+  animation-delay: 4s;
+}
+
+.star-three {
+  top: 65%;
+  left: 80%;
+  animation-delay: 7s;
+}
+
+@keyframes shooting {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(-35deg);
+  }
+  5% {
+    opacity: 1;
+  }
+  20% {
+    opacity: 0;
+    transform: translate(-250px, 180px) rotate(-35deg);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* 💫 Golden click sparkles */
+.click-sparkle {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  color: #f7dca8;
+  font-size: 18px;
+  animation: sparklePop 800ms ease-out forwards;
+}
+
+@keyframes sparklePop {
+  0% {
+    opacity: 1;
+    transform: scale(0.3) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--move-x), var(--move-y))
+      scale(1.5) rotate(120deg);
+  }
+}
+
+/* 🎂 Birthday Cake Surprise */
+
+.cake-stage {
+  display: flex;
+  justify-content: center;
+  padding: 75px 10px 35px;
+}
+
+.birthday-cake {
+  position: relative;
+  width: 230px;
+  height: 150px;
+}
+
+.cake-halves {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 230px;
+  height: 105px;
+  display: flex;
+}
+
+.cake-half {
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    #fff0df 0 15%,
+    #e9a9a0 15% 42%,
+    #b96e75 42% 100%
+  );
+  box-shadow: 0 12px 25px #0006;
+}
+
+.left-half {
+  border-radius: 15px 0 0 15px;
+}
+
+.right-half {
+  border-radius: 0 15px 15px 0;
+}
+
+.candles {
+  position: absolute;
+  top: -35px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  z-index: 3;
+}
+
+.candle {
+  width: 10px;
+  height: 42px;
+  background: repeating-linear-gradient(
+    45deg,
+    #fff0d5,
+    #fff0d5 5px,
+    #d9a7b5 5px,
+    #d9a7b5 10px
+  );
+  border-radius: 4px;
+  position: relative;
+}
+
+.flame {
+  position: absolute;
+  width: 14px;
+  height: 20px;
+  background: #ffcb62;
+  border-radius: 50% 50% 50% 50%;
+  top: -20px;
+  left: -2px;
+  box-shadow: 0 0 15px #ffb347,
+              0 0 30px #ffcf70;
+  animation: candleGlow .8s infinite alternate;
+}
+
+@keyframes candleGlow {
+  from { transform: scale(.85); opacity: .8; }
+  to { transform: scale(1.15); opacity: 1; }
+}
+
+/* Blow out candles */
+.candles.blown .flame {
+  opacity: 0;
+  transform: scale(0);
+  transition: .4s;
+}
+
+/* Cake cutting */
+.birthday-cake.cut .left-half {
+  transform: translateX(-45px) rotate(-8deg);
+}
+
+.birthday-cake.cut .right-half {
+  transform: translateX(45px) rotate(8deg);
+}
+
+.cake-half {
+  transition: transform 1s ease;
+}
+
+.cake-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+#cutButton:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
+
+#cakeMessage {
+  margin-top: 22px;
+  text-align: center;
+}
+
+/* 🎉 Cake cutting celebration */
+@keyframes cakeConfetti {
+  from {
+    transform: translate(0, 0) rotate(0deg) scale(.5);
+    opacity: 1;
+  }
+  to {
+    transform: translate(var(--x), var(--y))
+      rotate(360deg) scale(1.4);
+    opacity: 0;
+  }
+}
+</style>
+</head>
+<body>
+<div class="starfield">
+  <div class="moon-glow"></div>
+
+  <span class="shooting-star star-one"></span>
+  <span class="shooting-star star-two"></span>
+  <span class="shooting-star star-three"></span>
+</div><main>
+<section class="hero" id="top">
+  <div class="kicker">A little surprise, made with love</div>
+  <h1>For Aadhii</h1>
+  <p class="small">Someone who makes ordinary moments feel special.</p>
+  <div class="rule"></div>
+  <button onclick="document.getElementById('birthday').scrollIntoView({behavior:'smooth'})">OPEN YOUR SURPRISE ✦</button>
+  <p class="tiny" style="margin-top:20px">P.S. Keep scrolling. There's more.</p>
+</section>
+
+<section id="birthday">
+  <div class="kicker">Today is all about you</div>
+  <h2>HAPPY BIRTHDAY,<br>AADHII!</h2>
+  <p class="lead">To my most favorite special person, Who brings my smile back — I hope this year brings you the happiness you quietly give to the people around you.</p>
+  <div class="rule"></div>
+  <div class="card">
+    <p style="font-size:19px;margin-bottom:0">Keep being your wonderfully silly, genuine self. Never stop laughing , I hope our frindship will last until our last breath.</p>
+  </div>
+</section>
+
+<section id="cake">
+  <div class="kicker">A little birthday magic</div>
+  <h2>A Cake Just for You, Aadhii! 🎂</h2>
+  <p class="lead">
+    Before exploring the rest of your surprise, there's something special waiting for you.
+  </p>
+
+  <div class="cake-stage">
+    <div class="birthday-cake" id="birthdayCake">
+
+      <div class="candles" id="candles">
+        <div class="candle"><span class="flame"></span></div>
+        <div class="candle"><span class="flame"></span></div>
+        <div class="candle"><span class="flame"></span></div>
+      </div>
+
+      <div class="cake-halves">
+        <div class="cake-half left-half"></div>
+        <div class="cake-half right-half"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="cake-buttons">
+    <button id="blowButton" onclick="blowCandles()">
+      BLOW THE CANDLES 🕯️
+    </button>
+
+    <button id="cutButton" onclick="cutCake()" disabled>
+      CUT THE CAKE 🎂
+    </button>
+  </div>
+
+  <p class="tiny" id="cakeMessage">
+    Close your eyes, make a wish, and blow! ♡
+  </p>
+</section>
+
+<section id="memories">
+  <div class="kicker">A few little memories</div>
+  <h2>Moments worth keeping</h2>
+  <p class="lead">Five snapshots, and a whole lot of memories behind them.</p>
+  <div class="gallery">
+    <figure class="photo"><img src="images/memory-1.jpeg" alt="Aadhii and a friend taking a selfie together"><figcaption>A moment together</figcaption></figure>
+    <figure class="photo"><img src="images/memory-2.jpeg" alt="Aadhii and a friend smiling in a selfie"><figcaption>That familiar smile</figcaption></figure>
+    <figure class="photo"><img src="images/memory-14.jpeg" alt="Two shadows on the sand"><figcaption>Some memories need no words</figcaption></figure>
+    <figure class="photo"><img src="images/memory-13.jpeg" alt="Aadhii and a friend in a selfie"><figcaption>Another one for the memories</figcaption></figure>
+    <figure class="photo"><img src="images/memory-15.jpeg" alt="Two friends taking a selfie at work"></figure>
+      <figure class="photo"><img src="images/memory-18.jpeg"></figure>
+            <figure class="photo"><img src="images/memory-7.jpeg"></figure>
+      <figure class="photo"><img src="images/memory-3.jpeg"></figure>
+      <figure class="photo"><img src="images/memory-19.jpeg"></figure>
+      <figure class="photo"><img src="images/memory-20.jpeg"></figure>
+      <figure class="photo"><img src="images/memory-21.jpeg"></figure>
+      <figure class="photo"><img src="images/memory-4.jpeg"></figure>
+      <figure class="photo"><img src="images/memory-16.jpeg"></figure>
+      <figure class="photo"><img src="images/memory-23.jpeg"></figure>
+      <figure class="photo"><img src="images/memory-10.jpeg"></figure>
+      <figure class="photo"><img src="images/memory-25.jpeg"></figure>
+      <figure class="photo"><img src="images/memory-26.jpeg"></figure>
+      <figure class="photo"><img src="images/memory-5.jpeg"></figure>
+      <figure class="photo"><img src="images/memory-12.jpeg"></figure>
+      <figure class="photo"><img src="images/memory-22.jpeg"></figure>
+      <figure class="photo"><img src="images/memory-24.jpeg"></figure>
+      <figure class="photo"><img src="images/memory-8.jpeg"></figure>
+      <figure class="photo"><img src="images/memory-27.jpeg"></figure>
+      <figure class="photo"><img src="images/memory-29.jpeg"></figure>
+      <figure class="photo"><img src="images/memory-28.jpeg"></figure>
+      <figure class="photo"><img src="images/memory-6.jpeg"></figure>
+     
+
+
+
+
+  </div>
+  <p class="memory-note">Some people become a happy part of your everyday life without even trying. I'm grateful for the laughs, the random moments, and the friendship we share.</p>
+</section>
+
+<section id="special">
+  <div class="kicker">One name just for you</div>
+  <div class="nickname">My Thangamana Paiyan ♡</div>
+  <p class="lead">Stay kind. Stay funny. Stay exactly the lovely human you are. You deserve a year full of good surprises.</p>
+  <div class="rule"></div>
+  <p style="font-size:18px">Happy birthday once again, Aadhii. I'm really glad our paths crossed.</p>
+</section>
+
+<section id="adventure">
+  <div class="kicker">Psst… there's one more thing</div>
+  <h2>Our Next Little Adventure</h2>
+  <p class="lead">I have a tiny plan for us. Open the little envelope and choose what we should do together next.</p>
+  <button class="envelope" id="openEnvelope" onclick="revealAdventure()"><span>✉</span> OPEN YOUR SECRET INVITATION</button>
+  <div class="adventure card hidden" id="adventureBox">
+    <p style="color:var(--muted)">Tap the mystery cards to reveal the ideas. Then choose your favourite one.</p>
+    <div class="choices">
+<button class="choice" data-plan="A trampoline park adventure — jumping, laughing, competing and making silly memories together!">
+  <span class="question">?</span>
+  <span class="reveal">🤸 Trampoline adventure</span>
+  <span class="tiny">Mystery 01</span>
+</button>
+    <button class="choice" data-plan="A movie together — popcorn, silly comments, and a good film."><span class="question">?</span><span class="reveal">🎬 Movie time</span><span class="tiny">Mystery 02</span></button>
+      <button class="choice" data-plan="A food adventure — let's find a new place and try something delicious."><span class="question">?</span><span class="reveal">🍜 Food adventure</span><span class="tiny">Mystery 03</span></button>
+      <button class="choice" data-plan="An unplanned day — no big agenda, just spending time together."><span class="question">?</span><span class="reveal">☀️ A random day out</span><span class="tiny">Mystery 04</span></button>
+    </div>
+    <div id="planResult" aria-live="polite">Your choice will appear here…</div>
+    <button id="confirm" class="hidden" onclick="confirmPlan()">CONFIRM OUR PLAN ♡</button>
+    <p class="tiny" id="confirmed" aria-live="polite"></p>
+  </div>
+</section>
+
+<section id="music">
+  <audio id="birthdaySong" autoplay loop preload="auto">
+    <source src="audio/radhima.mp3" type="audio/mpeg">
+  </audio>
+
+  <p class="tiny">A little melody for you, Aadhii. ♡</p>
+  <button id="musicButton" onclick="toggleMusic()">A LITTLE MUSICAL SURPRISE ♡♪</button>
+</section>
+<footer>Made with a little extra care, just for Aadhii. ✦</footer>
+</main>
+<script>
+const cards=[...document.querySelectorAll('.choice')];
+let selected=null;
+function revealAdventure(){
+  document.getElementById('adventureBox').classList.remove('hidden');
+  document.getElementById('openEnvelope').classList.add('hidden');
+  document.getElementById('adventureBox').scrollIntoView({behavior:'smooth',block:'center'});
+}
+cards.forEach(card=>card.addEventListener('click',()=>{
+  card.classList.add('open');
+  selected=card;
+  cards.forEach(c=>c.classList.remove('selected'));
+  card.classList.add('selected');
+  document.getElementById('planResult').textContent=card.dataset.plan;
+  document.getElementById('confirm').classList.remove('hidden');
+  document.getElementById('confirmed').textContent='';
+}));
+function confirmPlan(){
+  if(!selected)return;
+  document.getElementById('confirmed').textContent="It's a plan! No cancelling allowed. 😂♡";
+}
+const audio = document.getElementById('birthdaySong');
+const musicButton = document.getElementById('musicButton');
+
+function toggleMusic() {
+  if (audio.paused) {
+    audio.play()
+      .then(() => musicButton.textContent = 'PAUSE SONG ♪')
+      .catch(() => musicButton.textContent = 'TAP TO PLAY ♪');
+  } else {
+    audio.pause();
+    musicButton.textContent = 'A LITTLE MUSICAL SURPRISE ♡ ♪';
+  }
+}
+
+// Try autoplay when the page opens
+window.addEventListener('load', () => {
+  audio.play().then(() => {
+    musicButton.textContent = 'PAUSE SONG ♪';
+  }).catch(() => {
+    musicButton.textContent = 'A LITTLE MUSICAL SURPRISE ♡ ♪';
+  });
+});
+
+// ✨ Golden sparkle effect on clicks
+document.addEventListener('click', function(event) {
+  if (!event.target.closest('button, a, .choice')) return;
+
+  for (let i = 0; i < 7; i++) {
+    const sparkle = document.createElement('span');
+
+    sparkle.className = 'click-sparkle';
+    sparkle.textContent = ['✦', '✧', '✨'][i % 3];
+
+    sparkle.style.left = event.clientX + 'px';
+    sparkle.style.top = event.clientY + 'px';
+
+    sparkle.style.setProperty(
+      '--move-x',
+      (Math.random() - 0.5) * 100 + 'px'
+    );
+
+    sparkle.style.setProperty(
+      '--move-y',
+      (Math.random() - 0.5) * 100 + 'px'
+    );
+
+    document.body.appendChild(sparkle);
+
+    setTimeout(() => sparkle.remove(), 800);
+  }
+});
+
+// 🎂 Birthday Cake Surprise
+
+function blowCandles() {
+  document.getElementById('candles').classList.add('blown');
+
+  document.getElementById('blowButton').disabled = true;
+  document.getElementById('cutButton').disabled = false;
+
+  document.getElementById('cakeMessage').textContent =
+    "Wish made! Now it's time to cut your cake! ♡";
+}
+
+function cutCake() {
+  const cake = document.getElementById('birthdayCake');
+
+  cake.classList.add('cut');
+
+  document.getElementById('cutButton').disabled = true;
+
+  document.getElementById('cakeMessage').textContent =
+    "HAPPY BIRTHDAY, AADHII! Here's to many more beautiful memories! ❤️";
+
+  // Golden birthday celebration
+  for (let i = 0; i < 70; i++) {
+    const confetti = document.createElement('span');
+
+    confetti.textContent = ['✨', '✦', '🎉', '💛'][i % 4];
+
+    confetti.style.position = 'fixed';
+    confetti.style.left = '50%';
+    confetti.style.top = '50%';
+    confetti.style.zIndex = '99999';
+    confetti.style.pointerEvents = 'none';
+    confetti.style.fontSize = '20px';
+
+    confetti.style.setProperty(
+      '--x', (Math.random() - 0.5) * 600 + 'px'
+    );
+
+    confetti.style.setProperty(
+      '--y', (Math.random() - 0.5) * 600 + 'px'
+    );
+
+    confetti.style.animation =
+      'cakeConfetti 1.8s ease-out forwards';
+
+    document.body.appendChild(confetti);
+
+    setTimeout(() => confetti.remove(), 1800);
+  }
+}
+</script>
+</body>
+</html>
